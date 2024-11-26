@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract CoffeeTraceability {
+
+    struct Coffee {
+        uint id;
+        string origin;
+        string process;
+        string qualityCert;
+        uint timestamp;
+    }
+
+    mapping(uint => Coffee) public coffeeData;
+    uint public coffeeCount;
+
+    event CoffeeRegistered(uint coffeeId, string origin, string process, string qualityCert, uint timestamp);
+
+    function registerCoffee(string memory _origin, string memory _process, string memory _qualityCert) public {
+        coffeeCount++;
+        coffeeData[coffeeCount] = Coffee(coffeeCount, _origin, _process, _qualityCert, block.timestamp);
+        emit CoffeeRegistered(coffeeCount, _origin, _process, _qualityCert, block.timestamp);
+    }
+
+    function getCoffee(uint _coffeeId) public view returns (Coffee memory) {
+        return coffeeData[_coffeeId];
+    }
+}
